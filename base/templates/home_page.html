@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KyZXEAg3QhqLMpG8r+8fhAXLRBo3v2CR7LhqE+of+ax5Ql+YGmHEbZ5ZtIhZfZC5Oxal7n18D2lm1IM1rMWsFg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1A1A1A;
+            color: #E0E0E0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #4A90E2;
+            margin-top: 2rem;
+        }
+
+        form {
+            margin-bottom: 2rem;
+        }
+
+        button {
+            background-color: #4A90E2;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px #357ABD;
+            position: relative;
+        }
+
+        button:hover {
+            background-color: #357ABD;
+            box-shadow: 0 2px #357ABD;
+            top: 2px;
+        }
+
+        .item-card {
+            background-color: #2A2A2A;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            width: 90%;
+            max-width: 600px;
+            text-align: left;
+        }
+
+        .item-card h3 {
+            margin: 0;
+            margin-bottom: 0.5rem;
+            color: #4A90E2;
+            font-size: 1.25rem;
+        }
+
+        .item-card p {
+            margin: 0.5rem 0;
+        }
+
+        .item-card form {
+            display: inline;
+        }
+
+        .item-card form button {
+            background-color: #F5A623;
+            box-shadow: 0 4px #D48C1F;
+        }
+
+        .item-card form button:hover {
+            background-color: #D48C1F;
+            box-shadow: 0 2px #D48C1F;
+            top: 2px;
+        }
+
+        .item-card form .delete-btn {
+            background-color: #E74C3C;
+            box-shadow: 0 4px #C0392B;
+        }
+
+        .item-card form .delete-btn:hover {
+            background-color: #C0392B;
+            box-shadow: 0 2px #C0392B;
+            top: 2px;
+        }
+
+        .icon {
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Inventory System</h1>
+    <form action="{% url 'add_item' %}" method="post">
+        {% csrf_token %}
+        <button type="submit"><i class="fas fa-plus icon"></i>ADD NEW ITEM</button>
+    </form>
+    {% for item in items %}
+    <div class="item-card">
+        <h3><i class="fas fa-box icon"></i>{{ item.item_name }}</h3>
+        <p><i class="fas fa-dollar-sign icon"></i>Price: ₱{{ item.item_price }}</p>
+        <p><i class="fas fa-cubes icon"></i>Quantity: {{ item.item_quantity }}</p>
+        <form action="{% url 'update_item_form' item.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit"><i class="fas fa-edit icon"></i>Update</button>
+        </form>
+        <form action="{% url 'delete_item' item.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="delete-btn"><i class="fas fa-trash icon"></i>Delete</button>
+        </form>
+    </div>
+    {% endfor %}
+</body>
+</html>
